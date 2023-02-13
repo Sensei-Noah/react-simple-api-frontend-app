@@ -1,42 +1,18 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+
 import Loader from '../Components/Loader'
 import ProductCard from '../Components/ProductCard'
+import { useAxiosGet } from '../Hooks/HttpsRequest'
 
 
 function Home() {
 
-    const url = `https://63c45c08f0028bf85fa7547e.mockapi.io/api/v1/products?page=1&limit=10`
-    const [products, setProducts] = useState({
-        loading: false,
-        data: null,
-        error: false,
-    })
+    const url = `https://${process.env.REACT_APP_MOCKAPI_KEY}.mockapi.io/api/v1/products?page=1&limit=10`
+
+    let products = useAxiosGet(url)
 
     let content = null
 
-    useEffect(() => {
-        setProducts({
-            loading: true,
-            data: null,
-            error: false,
-        })
-        axios.get(url)
-        .then(response => {
-            setProducts({
-                loading: false,
-                data: response.data,
-                error: false,
-            })
-        })
-        .catch(() =>{
-            setProducts({
-                loading: false,
-                data: null,
-                error: true,
-            })
-        })
-    }, [url])
 
     if(products.error){
         content = 
@@ -66,7 +42,7 @@ function Home() {
 
     return(
         <div>
-            <h1 className="font-bold text-2xl">Products</h1>
+            <h1 className="font-bold text-2xl text-center">TOP PRODUCTS</h1>
 
 
             {content}
